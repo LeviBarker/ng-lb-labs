@@ -1,0 +1,44 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "example-feature;open-angular-app",
+        "keyword": "Scenario",
+        "line": 2,
+        "name": "Open Angular App",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 3,
+            "name": "I navigate to the Angular homepage",
+            "result": {
+              "status": "undefined",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 4,
+            "name": "I should see the title \"My Angular App\"",
+            "result": {
+              "status": "undefined",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "example-feature",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Example feature",
+    "tags": [],
+    "uri": "src/tests/features/example.feature"
+  }
+]

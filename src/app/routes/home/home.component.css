@@ -1,0 +1,8 @@
+.home-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 24px;
+}

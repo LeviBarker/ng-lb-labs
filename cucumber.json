@@ -1,0 +1,10 @@
+{
+  "default": {
+    "require": [
+      "tests/steps/"
+    ],
+    "paths": [
+      "tests/features/"
+    ]
+  }
+}

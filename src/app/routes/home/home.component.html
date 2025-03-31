@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" class="home-toolbar">
+  <img src="logo.svg" alt="App Logo" class="logo" />
+  <div>
+    @if (loginStore.user()) {
+      <button mat-button (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    }
+    @else {
+      <button mat-button (click)="continueWithGoogle()">
+        <mat-icon>login</mat-icon>
+        Sign In
+      </button>
+    }
+  </div>
+</mat-toolbar>
+<section class="section-with-space">
+  <pre>
+      {{ loginStore.user() | json }}
+  </pre>
+</section>
