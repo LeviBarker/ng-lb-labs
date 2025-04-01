@@ -9,6 +9,7 @@
     "test": "ng test",
     "test:cucumber": "cucumber-js tests",
     "e2e": "npm ci && npm run start && npm run cucumber",
+    "firebase:emulators": "firebase emulators:start --only firestore,auth",
     "openapi-generate": "npx openapi-typescript ./src/app/slices/openapi.yaml -o ./src/app/slices/schema.ts"
   },
   "private": true,
