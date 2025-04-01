@@ -12,12 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
+        name: Install dependencies...
       - run: npm run build
+        name: Build project...
+      - run: npx playwright install
+        name: Install Playwright browsers...
       - run: npm start &
+        name: Start project server...
         env:
           CI: true
       - run: npx wait-on http://localhost:4200
+        name: Wait for project server to be ready...
       - run: npm run test:cucumber
+        name: Execute BDD E2E tests...
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
