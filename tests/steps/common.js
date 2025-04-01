@@ -4,7 +4,7 @@ const {chromium, expect} = require("@playwright/test");
 let browser, page;
 
 Before(async () => {
-  browser = await chromium.launch({headless: false});
+  browser = await chromium.launch();
   const context = await browser.newContext();
   page = await context.newPage();
 });
