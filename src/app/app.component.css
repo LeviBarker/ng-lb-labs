@@ -1,0 +1,17 @@
+.main-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-toolbar .actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.router-outlet-slot {
+  padding: 16px;
+  overflow: auto;
+}

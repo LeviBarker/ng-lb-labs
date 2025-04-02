@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UnauthenticatedComponent } from './unauthenticated.component';
+import { HomeschoolComponent } from './homeschool.component';
 
-describe('UnauthenticatedComponent', () => {
-  let component: UnauthenticatedComponent;
-  let fixture: ComponentFixture<UnauthenticatedComponent>;
+describe('HomeschoolComponent', () => {
+  let component: HomeschoolComponent;
+  let fixture: ComponentFixture<HomeschoolComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UnauthenticatedComponent]
+      imports: [HomeschoolComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UnauthenticatedComponent);
+    fixture = TestBed.createComponent(HomeschoolComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

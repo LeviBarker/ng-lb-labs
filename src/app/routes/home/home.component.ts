@@ -1,54 +1,27 @@
 import {Component, inject} from '@angular/core';
-import {MatToolbar} from '@angular/material/toolbar';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {Auth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup} from '@angular/fire/auth';
 import {LoginStore} from '../../slices/login/login.store';
-import {AsyncPipe, JsonPipe} from '@angular/common';
-import {bufferCount, fromEvent, map} from 'rxjs';
-import {MatCard, MatCardContent} from '@angular/material/card';
+import {JsonPipe} from '@angular/common';
+import {MatCard, MatCardContent, MatCardHeader} from '@angular/material/card';
 import {MatDivider} from '@angular/material/divider';
+import {MatIcon} from '@angular/material/icon';
+import {MatButton} from '@angular/material/button';
+import {Router} from '@angular/router';
+import {visibleRoutes} from '../../app.routes';
 
 @Component({
   selector: 'app-home',
-  imports: [MatToolbar, MatButton, MatIcon, JsonPipe, AsyncPipe, MatCard, MatCardContent, MatDivider],
+  imports: [JsonPipe, MatCard, MatCardContent, MatDivider, MatButton, MatIcon, MatCardHeader],
   templateUrl: './home.component.html',
   standalone: true,
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  loginStore = inject(LoginStore)
+  router = inject(Router)
 
-  auth = inject(Auth);
-  loginStore = inject(LoginStore);
+  visibleRoutes = visibleRoutes
 
-  pressedKeys$ = fromEvent<KeyboardEvent>(window, 'keydown').pipe(
-    map((event) => event.key),
-    bufferCount(10),
-    map((keys) => keys.join(','))
-  )
-
-  secretCodeEntered$ = this.pressedKeys$.pipe(
-    map((keys) => keys == 'ArrowUp,ArrowUp,ArrowDown,ArrowDown,ArrowLeft,ArrowRight,ArrowLeft,ArrowRight,a,b')
-  )
-
-  async continueWithGoogle() {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(this.auth, provider);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async signInWithEmailAndPassword(email: string, password: string) {
-    try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async logOut() {
-    await this.auth.signOut();
+  async open(path: string) {
+    await this.router.navigate([path]);
   }
 }

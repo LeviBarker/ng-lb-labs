@@ -1,0 +1,14 @@
+<button mat-button (click)="goBack()">
+  <mat-icon>chevron_left</mat-icon>
+  Back
+</button>
+
+@for (subject of subjects; track subject.id) {
+  <mat-card class="subject-card">
+    <mat-card-content>
+      <span mat->{{ subject.title }}</span>
+      <p>Last Updated: {{ subject.lastUpdated | date }}</p>
+    </mat-card-content>
+  </mat-card>
+}
+

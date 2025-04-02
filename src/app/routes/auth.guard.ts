@@ -15,21 +15,8 @@ export class AuthGuardService {
         if (user) {
           resolve(true);
         } else {
-          this.router.navigate(['/login']);
-          resolve(false);
-        }
-      });
-    });
-  }
-
-  alreadyAuthenticatedCanActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.auth.onAuthStateChanged((user) => {
-        if (user) {
           this.router.navigate(['/']);
           resolve(false);
-        } else {
-          resolve(true);
         }
       });
     });
@@ -39,9 +26,4 @@ export class AuthGuardService {
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = new AuthGuardService(inject(Auth), inject(Router));
   return authService.canActivate(route, state);
-};
-
-export const alreadyAuthenticatedCanActivate: CanActivateFn = (route, state) => {
-  const authService = new AuthGuardService(inject(Auth), inject(Router));
-  return authService.alreadyAuthenticatedCanActivate(route, state);
 };

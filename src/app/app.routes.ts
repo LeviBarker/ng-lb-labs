@@ -1,14 +1,14 @@
 import {Routes} from '@angular/router';
 import {HomeComponent} from './routes/home/home.component';
 import {NotFoundComponent} from './routes/not-found/not-found.component';
-import {UnauthenticatedComponent} from './routes/unauthenticated/unauthenticated.component';
-import {alreadyAuthenticatedCanActivate, authGuard} from './routes/auth.guard';
+import {authGuard} from './routes/auth.guard';
+import {HomeschoolComponent} from './routes/homeschool/homeschool.component';
 
 export const routes: Routes = [
   {
-    path: 'login',
-    component: UnauthenticatedComponent,
-    canActivate: [alreadyAuthenticatedCanActivate]
+    path: 'homeschool',
+    component: HomeschoolComponent,
+    canActivate: [authGuard]
   },
   {
     path: '',
@@ -20,3 +20,21 @@ export const routes: Routes = [
     component: NotFoundComponent
   }
 ];
+
+export interface VisibleRoute {
+  title: string;
+  path: string;
+  protected?: boolean;
+}
+
+export const visibleRoutes: VisibleRoute[] = [
+  {
+    title: 'Homeschool App',
+    path: './homeschool',
+    protected: true
+  },
+  {
+    title: '404 Page',
+    path: './fake-page'
+  }
+]

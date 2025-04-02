@@ -3,12 +3,12 @@ import {signalStore, withState} from '@ngrx/signals';
 
 type LoginState = {
   user: User | null,
-  isLoading: false
+  isLoading: boolean
 }
 
 const initialState: LoginState = {
   user: null,
-  isLoading: false
+  isLoading: true
 }
 
 export const LoginStore = signalStore(
