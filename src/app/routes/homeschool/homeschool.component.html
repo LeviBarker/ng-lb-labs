@@ -3,12 +3,20 @@
   Back
 </button>
 
-@for (subject of subjects; track subject.id) {
+@for (subject of subjects$ | async; track subject["id"]) {
   <mat-card class="subject-card">
     <mat-card-content>
-      <span mat->{{ subject.title }}</span>
-      <p>Last Updated: {{ subject.lastUpdated | date }}</p>
+      <span>{{ subject["title"] }}</span>
+      <p>{{ subject["id"] }}</p>
+      <button mat-button color="alert">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
     </mat-card-content>
   </mat-card>
 }
+
+<button mat-button (click)="addSubject()">
+  Add Subject
+</button>
 

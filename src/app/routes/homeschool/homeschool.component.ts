@@ -4,7 +4,8 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {Subject} from '../../models/subject';
-import {DatePipe} from '@angular/common';
+import {AsyncPipe, DatePipe, JsonPipe} from '@angular/common';
+import {SubjectService} from '../../slices/subject/subject.service';
 
 @Component({
   selector: 'app-homeschool',
@@ -14,7 +15,9 @@ import {DatePipe} from '@angular/common';
     MatCard,
     MatCardTitle,
     MatCardContent,
-    DatePipe
+    DatePipe,
+    AsyncPipe,
+    JsonPipe
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
@@ -22,6 +25,7 @@ import {DatePipe} from '@angular/common';
 })
 export class HomeschoolComponent {
   router = inject(Router);
+  subjectService = inject(SubjectService);
 
   subjects: Subject[] = [
     {
@@ -31,6 +35,17 @@ export class HomeschoolComponent {
       lastUpdated: new Date()
     }
   ]
+
+  subjects$ = this.subjectService.getAll()
+
+  async addSubject() {
+    await this.subjectService.createSubject({
+      id: "1234",
+      title: "Test",
+      grade: "A+",
+      lastUpdated: new Date()
+    })
+  }
 
   goBack() {
     this.router.navigate(['..']);
