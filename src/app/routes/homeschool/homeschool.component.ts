@@ -1,12 +1,15 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {Subject} from '../../models/subject';
-import {AsyncPipe, DatePipe} from '@angular/common';
+import {AsyncPipe, DatePipe, JsonPipe} from '@angular/common';
 import {SubjectService} from '../../slices/subject/subject.service';
 import {MatToolbar} from '@angular/material/toolbar';
+import {MatTooltip} from '@angular/material/tooltip';
+import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {SubjectStore} from '../../slices/subject/subject.store';
 
 @Component({
   selector: 'app-homeschool',
@@ -18,7 +21,14 @@ import {MatToolbar} from '@angular/material/toolbar';
     MatCardContent,
     DatePipe,
     AsyncPipe,
-    MatToolbar
+    MatToolbar,
+    MatIconButton,
+    MatTooltip,
+    MatFormField,
+    MatInput,
+    MatFormField,
+    MatLabel,
+    JsonPipe
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
@@ -28,24 +38,26 @@ export class HomeschoolComponent {
   router = inject(Router);
   subjectService = inject(SubjectService);
 
-  subjects: Subject[] = [
-    {
-      id: "1234",
-      title: "Science",
-      grade: "A+",
-      lastUpdated: new Date()
-    }
-  ]
+  goalInput = signal('')
 
   subjects$ = this.subjectService.getAll()
 
+  async openSubject(id: string) {
+    await this.router.navigate(['./homeschool/subject', id])
+  }
+
+  updateGoalInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.goalInput.set(inputElement.value);
+  }
+
   async addSubject() {
     await this.subjectService.createSubject({
-      id: "1234",
-      title: "Test",
+      title: this.goalInput(),
       grade: "A+",
       lastUpdated: new Date()
-    })
+    });
+    this.goalInput.set('')
   }
 
   async deleteSubject(id: string) {
