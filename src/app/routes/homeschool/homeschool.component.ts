@@ -4,8 +4,9 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {Subject} from '../../models/subject';
-import {AsyncPipe, DatePipe, JsonPipe} from '@angular/common';
+import {AsyncPipe, DatePipe} from '@angular/common';
 import {SubjectService} from '../../slices/subject/subject.service';
+import {MatToolbar} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-homeschool',
@@ -17,7 +18,7 @@ import {SubjectService} from '../../slices/subject/subject.service';
     MatCardContent,
     DatePipe,
     AsyncPipe,
-    JsonPipe
+    MatToolbar
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
@@ -45,6 +46,10 @@ export class HomeschoolComponent {
       grade: "A+",
       lastUpdated: new Date()
     })
+  }
+
+  async deleteSubject(id: string) {
+    await this.subjectService.deleteSubject(id);
   }
 
   goBack() {

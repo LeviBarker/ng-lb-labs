@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {Firestore, collection, collectionData, addDoc} from '@angular/fire/firestore';
+import {Firestore, collection, collectionData, addDoc, deleteDoc, doc} from '@angular/fire/firestore';
 import {Subject} from '../../models/subject';
 
 @Injectable({
@@ -15,5 +15,10 @@ export class SubjectService {
 
   getAll() {
     return collectionData(this.collection, {idField: 'id'})
+  }
+
+  deleteSubject(id: string) {
+    const documentRef = doc(this.collection, id)
+    return deleteDoc(documentRef)
   }
 }
