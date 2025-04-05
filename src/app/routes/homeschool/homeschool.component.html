@@ -3,47 +3,40 @@
     <mat-icon>chevron_left</mat-icon>
     Back
   </button>
+</mat-toolbar>
+
+<div>
+  <mat-form-field>
+    <mat-label>Enter a goal</mat-label>
+    <input matInput placeholder="Goal" [value]="goalInput()" (input)="updateGoalInput($event)"/>
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="addSubject()">
+      <mat-icon>trash</mat-icon>
+    </button>
+  </mat-form-field>
   <button mat-button (click)="addSubject()">
     <mat-icon>add</mat-icon>
     Add Learning Goal
   </button>
-</mat-toolbar>
+</div>
 
-<mat-form-field>
-  <mat-label>Enter a goal</mat-label>
-  <input matInput placeholder="Goal" [value]="goalInput()" (input)="updateGoalInput($event)"/>
-  <button
-    mat-icon-button
-    matSuffix
-    (click)="addSubject()">
-    <mat-icon>trash</mat-icon>
-  </button>
-</mat-form-field>
 
-@for (subject of subjects$ | async; track subject["id"]) {
-  <mat-card class="subject-card" (click)="openSubject(subject['id'])">
+@for (keyValue of subjectStore.subjects() | keyvalue; track keyValue.key) {
+  <mat-card class="subject-card" (click)="openSubject(keyValue.value['id'])">
     <mat-card-content>
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
-          <span style="font-size: 1.3rem; font-weight: bold;">{{ subject["title"] }}</span>
+          <span style="font-size: 1.3rem; font-weight: bold;">{{ keyValue.value["title"] }}</span>
           <small>Last recorded: Yesterday</small>
         </div>
         <div matTooltip="Grades are trending upwards"
              style="display: flex; justify-content: flex-end; align-items: center; gap: 4px">
           <mat-icon style="color: #337cec;">trending_up</mat-icon>
-          <span style="font-size: 1.75rem; font-weight: bold;">{{ subject["grade"] }}</span>
+          <span style="font-size: 1.75rem; font-weight: bold;">{{ keyValue.value["grade"] }}</span>
         </div>
       </div>
-
-      <!--      <button mat-button>-->
-      <!--        <mat-icon>launch</mat-icon>-->
-      <!--        Open-->
-      <!--      </button>-->
-      <!--      <span>Last Update: N/A</span>-->
-      <!--      <button mat-button color="alert" (click)="deleteSubject(subject['id'])">-->
-      <!--        <mat-icon>delete</mat-icon>-->
-      <!--        Delete-->
-      <!--      </button>-->
     </mat-card-content>
   </mat-card>
 }

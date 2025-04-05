@@ -1,2 +1,7 @@
-<p>subject-detail works!</p>
-{{id$ | async}}
+<mat-toolbar>
+  <button mat-button (click)="goBack()">
+    <mat-icon>chevron_left</mat-icon>
+    Back
+  </button>
+</mat-toolbar>
+<pre>{{subject() | json}}</pre>

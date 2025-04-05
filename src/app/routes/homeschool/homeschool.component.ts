@@ -3,8 +3,7 @@ import {Router} from '@angular/router';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
-import {Subject} from '../../models/subject';
-import {AsyncPipe, DatePipe, JsonPipe} from '@angular/common';
+import {AsyncPipe, DatePipe, JsonPipe, KeyValuePipe} from '@angular/common';
 import {SubjectService} from '../../slices/subject/subject.service';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatTooltip} from '@angular/material/tooltip';
@@ -28,19 +27,19 @@ import {SubjectStore} from '../../slices/subject/subject.store';
     MatInput,
     MatFormField,
     MatLabel,
-    JsonPipe
+    JsonPipe,
+    KeyValuePipe
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
   styleUrl: './homeschool.component.css'
 })
 export class HomeschoolComponent {
-  router = inject(Router);
-  subjectService = inject(SubjectService);
+  private readonly router = inject(Router);
+  private readonly subjectService = inject(SubjectService);
 
   goalInput = signal('')
-
-  subjects$ = this.subjectService.getAll()
+  subjectStore = inject(SubjectStore)
 
   async openSubject(id: string) {
     await this.router.navigate(['./homeschool/subject', id])
@@ -60,11 +59,7 @@ export class HomeschoolComponent {
     this.goalInput.set('')
   }
 
-  async deleteSubject(id: string) {
-    await this.subjectService.deleteSubject(id);
-  }
-
-  goBack() {
-    this.router.navigate(['..']);
+  async goBack() {
+    await this.router.navigate(['./']);
   }
 }
