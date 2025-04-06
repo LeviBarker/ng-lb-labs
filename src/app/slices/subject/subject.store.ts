@@ -1,5 +1,6 @@
 import {Subject} from '../../models/subject';
-import {signalStore, withState} from '@ngrx/signals';
+import {signalStore, withComputed, withState} from '@ngrx/signals';
+import {computed} from '@angular/core';
 
 export interface SubjectState {
   subjects: Record<string, Subject>,
@@ -13,5 +14,8 @@ const initialState: SubjectState = {
 
 export const SubjectStore = signalStore(
   { providedIn: 'root', protectedState: false},
-  withState(initialState)
+  withState(initialState),
+  withComputed(({subjects}) => ({
+    list: computed(() => Object.values(subjects()))
+  }))
 )

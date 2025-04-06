@@ -23,18 +23,18 @@
 </div>
 
 
-@for (keyValue of subjectStore.subjects() | keyvalue; track keyValue.key) {
-  <mat-card class="subject-card" (click)="openSubject(keyValue.value['id'])">
+@for (subject of subjectStore.list(); track subject['id']) {
+  <mat-card class="subject-card" (click)="openSubject(subject['id'])">
     <mat-card-content>
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
-          <span style="font-size: 1.3rem; font-weight: bold;">{{ keyValue.value["title"] }}</span>
+          <span style="font-size: 1.3rem; font-weight: bold;">{{ subject["title"] }}</span>
           <small>Last recorded: Yesterday</small>
         </div>
         <div matTooltip="Grades are trending upwards"
              style="display: flex; justify-content: flex-end; align-items: center; gap: 4px">
           <mat-icon style="color: #337cec;">trending_up</mat-icon>
-          <span style="font-size: 1.75rem; font-weight: bold;">{{ keyValue.value["grade"] }}</span>
+          <span style="font-size: 1.75rem; font-weight: bold;">{{ subject["grade"] }}</span>
         </div>
       </div>
     </mat-card-content>

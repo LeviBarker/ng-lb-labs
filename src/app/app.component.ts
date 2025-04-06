@@ -35,7 +35,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.handleAuthStateChange();
-    this.loadSubjects();
   }
 
   ngOnDestroy() {
@@ -61,6 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
   private handleAuthStateChange(): void {
     this.auth.onAuthStateChanged(user => {
       patchState(this.loginStore, () => ({ user, isLoading: false }));
+      if(user) {
+        this.loadSubjects()
+      }
     });
   }
 
