@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {Firestore, collection, collectionData, addDoc, deleteDoc, doc} from '@angular/fire/firestore';
+import {Firestore, collection, collectionData, addDoc, deleteDoc, doc, updateDoc} from '@angular/fire/firestore';
 import {Subject} from '../../models/subject';
 import {tap} from 'rxjs';
 import {SubjectStore} from './subject.store';
@@ -14,10 +14,9 @@ export class SubjectService {
 
   subjectStore = inject(SubjectStore)
 
-  createSubject(subject: Partial<Subject>) {
+  create(subject: Partial<Subject>) {
     return addDoc(this.collection, subject)
   }
-
 
   getAll() {
     return collectionData(this.collection, {idField: 'id'})
@@ -33,8 +32,11 @@ export class SubjectService {
       )
   }
 
-  deleteSubject(id: string) {
-    const documentRef = doc(this.collection, id)
-    return deleteDoc(documentRef)
+  update(subject: Partial<{id: string} & Subject>) {
+    return updateDoc(doc(this.collection, subject.id), subject)
+  }
+
+  delete(id: string) {
+    return deleteDoc(doc(this.collection, id))
   }
 }

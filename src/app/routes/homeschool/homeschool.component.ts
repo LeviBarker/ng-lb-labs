@@ -51,7 +51,7 @@ export class HomeschoolComponent {
   }
 
   async addSubject() {
-    await this.subjectService.createSubject({
+    await this.subjectService.create({
       title: this.goalInput(),
       grade: "A+",
       lastUpdated: new Date()

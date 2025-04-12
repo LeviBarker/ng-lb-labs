@@ -4,4 +4,19 @@
     Back
   </button>
 </mat-toolbar>
-<pre>{{subject() | json}}</pre>
+
+@if(subject(); as subject) {
+  <mat-form-field class="example-full-width">
+    <mat-label>Title</mat-label>
+    <input matInput [value]="subject.title" (blur)="updateTitle($event)">
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Grade</mat-label>
+    <input matInput [value]="subject.grade" (blur)="updateGrade($event)">
+  </mat-form-field>
+  <button mat-button color="alert" (click)="deleteSubject(subject.id)">
+    Delete Subject
+  </button>
+}
+
+
