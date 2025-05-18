@@ -4,6 +4,7 @@ import {NotFoundComponent} from './routes/not-found/not-found.component';
 import {authGuard} from './routes/auth.guard';
 import {HomeschoolComponent} from './routes/homeschool/homeschool.component';
 import {SubjectDetailComponent} from './routes/subject-detail/subject-detail.component';
+import {PersonalDashboardComponent} from './routes/personal-dashboard/personal-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
     path: 'homeschool/subject/:id',
     component: SubjectDetailComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'personal-dashboard',
+    component: PersonalDashboardComponent,
   },
   {
     path: '',
