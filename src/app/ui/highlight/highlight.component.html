@@ -1,6 +1,8 @@
-<mat-card>
+<mat-card style="max-width: 512px">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
+    <div mat-card-avatar class="example-header-image">
+      <img style="height: 48px; margin-right: 12px; transform: rotate(-5deg)" [src]="highlight()?.image_url" alt="" srcset="">
+    </div>
     <mat-card-title>{{highlight()?.title}}</mat-card-title>
     <mat-card-subtitle>{{highlight()?.author}}</mat-card-subtitle>
   </mat-card-header>

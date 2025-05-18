@@ -1,5 +1,5 @@
 @if ((highlightsService.highlights$ | async)?.highlights; as highlights) {
-  <div style="display: flex; flex-direction: column; gap: 8px;">
+  <div style="display: flex; flex-direction: column; gap: 8px; align-items: center">
     @for (highlight of highlights; track highlight.image_url) {
       <app-highlight [highlight]="highlight"/>
     }
