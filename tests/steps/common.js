@@ -23,10 +23,6 @@ Then('the user should see {string}', async (text) => {
   expect(signInText).toBeTruthy();
 });
 
-Then("the page title should change to {string}", function (title) {
-  expect(true).toBeTruthy();
-});
+Then('the user should see {int} route(s)/card(s)', async (number) => {
 
-Given(/^the user is an admin$/, function () {
-  expect(true).toBeTruthy();
-});
+})

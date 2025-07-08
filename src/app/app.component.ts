@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { SubjectService } from './slices/subject/subject.service';
 import { LoginStore } from './slices/login/login.store';
@@ -10,6 +10,9 @@ import {RouterOutlet} from '@angular/router';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
+import { HomeschoolStandardsRepository } from './slices/homeschool-standards/homeschool-standards.repository';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +23,11 @@ import {MatButton} from '@angular/material/button';
     RouterOutlet,
     MatToolbar,
     MatIcon,
-    MatButton
+    MatButton,
+    JsonPipe
+  ],
+  providers: [
+    HomeschoolStandardsRepository
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -30,11 +37,13 @@ export class AppComponent implements OnInit, OnDestroy {
   protected readonly loginStore = inject(LoginStore);
   private readonly subjectStore = inject(SubjectStore);
   private readonly subscriptions = new Subscription();
+  private readonly homeschoolStandardsRepository = inject(HomeschoolStandardsRepository);
 
   private static readonly googleAuthProvider = new GoogleAuthProvider();
 
   ngOnInit() {
     this.handleAuthStateChange();
+    this.homeschoolStandardsRepository.loadEntities();
   }
 
   ngOnDestroy() {
@@ -67,7 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private loadSubjects(): void {
-    const subscription = this.subjectService.getAll().subscribe(subjectArray => {
+    const subscription = this.subjectService.getAllByField('uid', this.loginStore.user()?.uid).subscribe(subjectArray => {
       const subjectMap = subjectArray.reduce((map, subject) => {
         if (subject?.id) {
           map[subject.id] = subject;

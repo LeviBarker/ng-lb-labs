@@ -5,38 +5,40 @@
   </button>
 </mat-toolbar>
 
-<div>
+<form style="display: flex; flex-direction: column; gap: 8px;">
   <mat-form-field>
-    <mat-label>Enter a goal</mat-label>
-    <input matInput placeholder="Goal" [value]="goalInput()" (input)="updateGoalInput($event)"/>
-    <button
-      mat-icon-button
-      matSuffix
-      (click)="addSubject()">
-      <mat-icon>trash</mat-icon>
-    </button>
+    <mat-label>Title</mat-label>
+    <input matInput>
   </mat-form-field>
-  <button mat-button (click)="addSubject()">
-    <mat-icon>add</mat-icon>
-    Add Learning Goal
-  </button>
-</div>
-
-
-@for (subject of subjectStore.list(); track subject['id']) {
-  <mat-card class="subject-card" (click)="openSubject(subject['id'])">
-    <mat-card-content>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
-          <span style="font-size: 1.3rem; font-weight: bold;">{{ subject["title"] }}</span>
-          <small>Last recorded: Yesterday</small>
-        </div>
-        <div matTooltip="Grades are trending upwards"
-             style="display: flex; justify-content: flex-end; align-items: center; gap: 4px">
-          <mat-icon style="color: #337cec;">trending_up</mat-icon>
-          <span style="font-size: 1.75rem; font-weight: bold;">{{ subject["grade"] }}</span>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-}
+  <mat-form-field>
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="date">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Standards</mat-label>
+    <mat-select [formControl]="standardsFormControl" multiple>
+      <mat-select-trigger>
+        {{standardsFormControl.value?.[0] || ''}}
+        @if ((standardsFormControl.value?.length || 0) > 1) {
+          <span class="example-additional-selection">
+            (+{{(standardsFormControl.value?.length || 0) - 1}} {{standardsFormControl.value?.length === 2 ? 'other' : 'others'}})
+          </span>
+        }
+      </mat-select-trigger>
+      @for (group of strandGroups() | keyvalue; track group.key) {
+        <mat-optgroup [label]="group.key">
+          @for (standard of group.value; track standard.coding) {
+            <mat-option [value]="standard.coding" style="padding-top: 4px; padding-bottom: 4px">
+              {{standard.description}}
+              <strong>({{standard.coding}})</strong>
+            </mat-option>
+          }
+        </mat-optgroup>
+      }
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button>Add attachment(s)</button>  
+</form>
