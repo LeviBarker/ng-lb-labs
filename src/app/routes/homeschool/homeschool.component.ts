@@ -75,4 +75,18 @@ export class HomeschoolComponent {
   async goBack() {
     await this.router.navigate(['./']);
   }
+
+  attachment: File | null = null;
+  attachmentDataUrl: string | ArrayBuffer | null | undefined = '';
+
+  onFileSelected(event: any) {
+    this.attachment = event.target.files[0];
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(this.attachment as Blob);
+
+    fileReader.onload = (fileReaderEvent) => {
+      this.attachmentDataUrl = fileReaderEvent.target?.result;
+    }
+  }
 }
