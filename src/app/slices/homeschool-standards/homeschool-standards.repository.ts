@@ -1,11 +1,11 @@
-import { createStore } from '@ngneat/elf'
-import { withEntities, selectAllEntities, setEntities } from '@ngneat/elf-entities'
-import { Observable, tap } from 'rxjs'
-import { inject, Injectable, signal } from '@angular/core'
-import { HomeschoolStandardsService } from './homeschool-standards.service'
-import { trackRequestResult } from '@ngneat/elf-requests'
-import { HomeschoolStandard } from './homeschool-standard'
-import { toSignal } from '@angular/core/rxjs-interop'
+import {createStore} from '@ngneat/elf'
+import {selectAllEntities, setEntities, withEntities} from '@ngneat/elf-entities'
+import {tap} from 'rxjs'
+import {inject, Injectable} from '@angular/core'
+import {HomeschoolStandardsService} from './homeschool-standards.service'
+import {trackRequestResult} from '@ngneat/elf-requests'
+import {HomeschoolStandard} from './homeschool-standard'
+import {toSignal} from '@angular/core/rxjs-interop'
 
 const store = createStore({ name: 'homeschoolStandards' }, withEntities<HomeschoolStandard>({
   initialValue: []

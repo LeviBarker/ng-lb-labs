@@ -5,14 +5,14 @@
   </button>
 </mat-toolbar>
 
-<form style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 128px;" onsubmit="return false;">
+<form style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 128px;" onsubmit="return false;" [formGroup]="form">
   <mat-form-field>
     <mat-label>Title</mat-label>
-    <input matInput>
+    <input matInput formControlName="title">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="picker" [formControl]="date">
+    <input matInput [matDatepicker]="picker" formControlName="date">
     <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
@@ -46,6 +46,6 @@
   @if(attachmentDataUrl) {
     <img [src]="attachmentDataUrl" />
   }
-  <button mat-flat-button color="primary">Submit</button>
+  <button mat-flat-button color="primary" (click)="submit()">Submit</button>
 
 </form>
