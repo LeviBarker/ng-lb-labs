@@ -41,11 +41,11 @@
       }
     </mat-select>
   </mat-form-field>
-  <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
   <button mat-raised-button (click)="attachmentInput.click()">Add an attachment</button>
   @if(attachmentDataUrl) {
     <img [src]="attachmentDataUrl" />
   }
-  <button mat-flat-button color="primary" (click)="submit()">Submit</button>
+  <button mat-flat-button color="primary" (click)="submit()" [disabled]="!attachment || isSubmitting()">{{ isSubmitting() ? "Submitting..." : "Submit" }}</button>
 
 </form>
