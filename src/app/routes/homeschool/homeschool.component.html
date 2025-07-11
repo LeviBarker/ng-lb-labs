@@ -42,13 +42,13 @@
     </mat-select>
   </mat-form-field>
   <div style="display: flex; gap: 8px;">
-    <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
-    <button color="primary" style="flex: 1;" mat-flat-button (click)="attachmentInput.click()">
+    <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
+    <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
       <mat-icon>add_a_photo</mat-icon>
       <span>Add Photo</span>
     </button>
-    <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" capture="user" />
-    <button style="flex: 1;" mat-flat-button (click)="attachmentInput.click()">
+    <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" capture="user" />
+    <button style="flex: 1;" mat-flat-button (click)="videoInput.click()">
       <mat-icon>video_camera_back_add</mat-icon>
       <span>Add Video</span>
     </button>
