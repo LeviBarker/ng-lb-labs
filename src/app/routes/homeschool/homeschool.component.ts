@@ -1,6 +1,6 @@
 import {Component, computed, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {AsyncPipe, DatePipe, JsonPipe, KeyValuePipe} from '@angular/common';
@@ -47,7 +47,8 @@ import {HomeschoolRecordsService} from '../../slices/homeschool-records/homescho
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatFabButton
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',

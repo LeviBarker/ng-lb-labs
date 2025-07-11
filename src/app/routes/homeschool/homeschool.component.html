@@ -41,11 +41,25 @@
       }
     </mat-select>
   </mat-form-field>
-  <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
-  <button mat-raised-button (click)="attachmentInput.click()">Add an attachment</button>
+  <div style="display: flex; gap: 8px;">
+    <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
+    <button color="primary" style="flex: 1;" mat-flat-button (click)="attachmentInput.click()">
+      <mat-icon>add_a_photo</mat-icon>
+      <span>Add Photo</span>
+    </button>
+    <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" capture="user" />
+    <button style="flex: 1;" mat-flat-button (click)="attachmentInput.click()">
+      <mat-icon>video_camera_back_add</mat-icon>
+      <span>Add Video</span>
+    </button>
+  </div>
+
   @if(attachmentDataUrl) {
     <img [src]="attachmentDataUrl" />
   }
-  <button mat-flat-button color="primary" (click)="submit()" [disabled]="!attachment || isSubmitting()">{{ isSubmitting() ? "Submitting..." : "Submit" }}</button>
+  <button style="position: fixed; right: 32px; bottom: 32px;" mat-fab extended color="primary" (click)="submit()" [disabled]="!attachment || isSubmitting()">
+    <mat-icon>send</mat-icon>
+    <span>{{ isSubmitting() ? "Submitting..." : "Submit" }}</span>
+  </button>
 
 </form>
