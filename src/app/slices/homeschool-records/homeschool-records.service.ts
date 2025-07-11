@@ -12,6 +12,7 @@ export class HomeschoolRecordsService {
   collection = collection(this.firestore, 'homeschool_records')
 
   create(record: Partial<HomeschoolRecord>) {
+    console.log(record);
     return addDoc(this.collection, {
       ...record,
       uid: this.loginStore.user()?.uid

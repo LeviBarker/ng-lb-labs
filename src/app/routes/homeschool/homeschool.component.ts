@@ -64,13 +64,14 @@ export class HomeschoolComponent {
 
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
-    date: new FormControl('', [Validators.required])
+    date: new FormControl('', [Validators.required]),
+    standards: new FormControl<string[]>([])
   })
 
   strandGroups = computed(() => {
-    return this.homeschoolStandardsRepository
-      .entities()
-      ?.reduce((accumulator, currentValue) => {
+    return (this.homeschoolStandardsRepository
+      .entities() ?? [])
+      .reduce((accumulator, currentValue) => {
 
         if (!accumulator[currentValue.strandDescription]) {
           accumulator[currentValue.strandDescription] = [];
@@ -120,6 +121,7 @@ export class HomeschoolComponent {
     await this.homeschoolRecordsService.create({
       name: this.form.controls.title.value ?? '',
       date: this.form.controls.date.value ?? '',
+      standardsCoding: this.form.controls.standards.value ?? [],
       attachmentUrl
     });
 

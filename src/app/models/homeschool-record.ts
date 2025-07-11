@@ -4,6 +4,6 @@ export interface HomeschoolRecord {
   uid?: string;
   name?: string;
   date: string;
-  standards: HomeschoolStandard[];
+  standardsCoding: string[];
   attachmentUrl?: string | null;
 }
