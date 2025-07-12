@@ -41,26 +41,34 @@
       }
     </mat-select>
   </mat-form-field>
-  <div style="display: flex; gap: 8px;">
-    <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
-    <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
-      <mat-icon>add_a_photo</mat-icon>
-      <span>Add Photo</span>
+  @if(attachment()) {
+    <button mat-flat-button color="warn" (click)="removeAttachment()">
+      <mat-icon>delete</mat-icon>
+      <span>Clear</span>
     </button>
-    <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" capture="user" />
-    <button style="flex: 1;" mat-flat-button (click)="videoInput.click()">
-      <mat-icon>video_camera_back_add</mat-icon>
-      <span>Add Video</span>
-    </button>
-  </div>
-{{videoType}}
-  @if(attachmentDataUrl) {
-    @if(videoType) {
+  } @else {
+    <div style="display: flex; gap: 8px;">
+      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
+      <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
+        <mat-icon>add_a_photo</mat-icon>
+        <span>Add Photo</span>
+      </button>
+      <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" capture="user" />
+      <button style="flex: 1;" mat-flat-button (click)="videoInput.click()">
+        <mat-icon>video_camera_back_add</mat-icon>
+        <span>Add Video</span>
+      </button>
+    </div>
+  }
+
+{{humanAttachmentSize()}}
+  @if(attachmentDataUrl()) {
+    @if(isVideoType()) {
       <video controls>
-        <source [src]="attachmentDataUrl" [type]="videoType" />
+        <source [src]="attachmentDataUrl()" [type]="attachmentType()" />
       </video>
     } @else {
-      <img [src]="attachmentDataUrl" />
+      <img [src]="attachmentDataUrl()" />
     }
   }
   <button style="position: fixed; right: 32px; bottom: 32px;" mat-fab extended color="primary" (click)="submit()" [disabled]="!attachment || isSubmitting()">

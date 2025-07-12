@@ -60,7 +60,7 @@ export class HomeschoolComponent {
   private readonly loginStore = inject(LoginStore);
   homeschoolStandardsRepository = inject(HomeschoolStandardsRepository);
   homeschoolRecordsService = inject(HomeschoolRecordsService);
-  
+
   storage = getStorage();
 
   form = new FormGroup({
@@ -90,24 +90,23 @@ export class HomeschoolComponent {
     await this.router.navigate(['./']);
   }
 
-  attachment: File | null = null;
-  attachmentDataUrl: string | ArrayBuffer | null | undefined = '';
+  attachment = signal<File | null>(null);
+  attachmentDataUrl = signal<string | ArrayBuffer | null | undefined>(null);
+  attachmentType = computed(() => this.attachment()?.type)
+  attachmentSize = computed(() => this.attachment()?.size ?? 0)
+  humanAttachmentSize = computed(() => this.humanFileSize(this.attachmentSize()))
+  isVideoType = computed(() => this.attachmentType()?.indexOf('video') != -1);
+
   videoType: string | null | undefined = '';
 
   onFileSelected(event: any) {
-    this.attachment = event.target.files[0];
-
-    if(this.attachment?.type.indexOf('video') != -1) {
-      this.videoType = this.attachment?.type;
-    } else {
-      this.videoType = null;
-    }
+    this.attachment.set(event.target.files[0]);
 
     const fileReader = new FileReader();
-    fileReader.readAsDataURL(this.attachment as Blob);
+    fileReader.readAsDataURL(this.attachment() as Blob);
 
     fileReader.onload = (fileReaderEvent) => {
-      this.attachmentDataUrl = fileReaderEvent.target?.result;
+      this.attachmentDataUrl.set(fileReaderEvent.target?.result);
     }
   }
 
@@ -118,12 +117,13 @@ export class HomeschoolComponent {
     const uid = this.loginStore.user()?.uid;
     let attachmentUrl: string | null = null;
 
-    if (this.attachment) {
+    const attachment = this.attachment()
+    if (attachment) {
       const extension = this.attachment.name.split('.')[1];
       attachmentUrl = `users/${uid}/${nanoid()}.${extension}`;
       const attachmentRef = ref(this.storage, attachmentUrl);
 
-      await uploadBytes(attachmentRef, this.attachment);
+      await uploadBytes(attachmentRef, attachment);
     }
 
     await this.homeschoolRecordsService.create({
@@ -134,8 +134,17 @@ export class HomeschoolComponent {
     });
 
     this.isSubmitting.set(false);
+    this.removeAttachment();
     this.form.reset();
-    this.attachment = null;
-    this.attachmentDataUrl = null;
+  }
+
+  removeAttachment() {
+    this.attachment.set(null);
+    this.attachmentDataUrl.set(null);
+  }
+
+  humanFileSize(size: number) {
+    let _size = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+    return +((size / Math.pow(1024, _size)).toFixed(2)) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][_size];
   }
 }
