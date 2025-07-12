@@ -19,6 +19,11 @@ export class HomeschoolStandardsRepository {
   entities = toSignal(store.pipe(selectAllEntities()))
 
   private setStandards(entities: HomeschoolStandard[] = []) {
+
+    entities.sort((a, b) => {
+      return a.coding > b.coding ? 1 : -1;
+    });
+
     store.update(setEntities(entities))
   }
 
