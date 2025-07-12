@@ -10,7 +10,6 @@ import {HighlightComponent} from '../../ui/highlight/highlight.component';
   templateUrl: './personal-dashboard.component.html',
   standalone: true,
   imports: [
-    MatCard,
     AsyncPipe,
     JsonPipe,
     HighlightComponent

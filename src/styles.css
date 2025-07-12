@@ -109,3 +109,36 @@ body { width: 100%; height: 100vh; overflow: hidden; margin: 0; font-family: Rob
   background-color: #303030;
   opacity: 8%;
 }
+
+.surface-background {
+  background-color: var(--mat-sys-surface-container);
+}
+
+.animation{
+  width: 64px;
+  height: 64px;
+}
+
+.animation-1 {
+  width: 64px;
+  height: 64px;
+  .checkmark {
+    animation: animate-checkmark 400ms ease-in-out forwards;
+    stroke-width: 10;
+    fill: transparent;
+    stroke: #63d663;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    opacity: 0.5;
+    transform: scale(0.75);
+    transform-origin: center;
+  }
+}
+
+@keyframes animate-checkmark {
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+    transform: scale(1);
+  }
+}

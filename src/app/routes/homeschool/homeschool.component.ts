@@ -22,6 +22,8 @@ import {Auth} from '@angular/fire/auth';
 import {LoginStore} from '../../slices/login/login.store';
 import {nanoid} from 'nanoid'
 import {HomeschoolRecordsService} from '../../slices/homeschool-records/homeschool-records.service';
+import {ImagePipe} from '../../ui/image.pipe';
+import {MatProgressBar} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-homeschool',
@@ -48,7 +50,9 @@ import {HomeschoolRecordsService} from '../../slices/homeschool-records/homescho
     MatFormFieldModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatFabButton
+    MatFabButton,
+    ImagePipe,
+    MatProgressBar
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
@@ -111,6 +115,7 @@ export class HomeschoolComponent {
   }
 
   isSubmitting = signal(false);
+  shouldShowCheckmark = signal(false);
 
   async submit() {
     this.isSubmitting.set(true);
@@ -136,6 +141,10 @@ export class HomeschoolComponent {
     this.isSubmitting.set(false);
     this.removeAttachment();
     this.form.reset();
+    this.shouldShowCheckmark.set(true);
+    setTimeout(() => {
+      this.shouldShowCheckmark.set(false);
+    }, 2000);
   }
 
   removeAttachment() {

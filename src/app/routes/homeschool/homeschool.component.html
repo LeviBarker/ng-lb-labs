@@ -5,7 +5,51 @@
   </button>
 </mat-toolbar>
 
-<form style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 128px;" onsubmit="return false;" [formGroup]="form">
+<h2>Upload a record</h2>
+<form style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 128px;" onsubmit="return false;"
+      [formGroup]="form">
+
+  @if (!attachment()) {
+    <div style="display: flex; gap: 8px;">
+      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*"
+             capture="user"/>
+      <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
+        <mat-icon>add_a_photo</mat-icon>
+        <span>Add Photo</span>
+      </button>
+      <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*"
+             capture="user"/>
+      <button style="flex: 1;" mat-flat-button (click)="videoInput.click()">
+        <mat-icon>video_camera_back_add</mat-icon>
+        <span>Add Video</span>
+      </button>
+    </div>
+  }
+  <div style="display: flex; gap: 8px;">
+    @if (attachmentDataUrl()) {
+      <div>
+        @if (isVideoType()) {
+          <video controls height="100" width="150">
+            <source [src]="attachmentDataUrl()" [type]="attachmentType()"/>
+          </video>
+        } @else {
+          <div
+            style="width: 150px; height: 100px; background-position: center; background-size: cover; background-repeat: no-repeat;"
+            [style.background-image]="attachmentDataUrl() | image">
+          </div>
+        }
+      </div>
+      <div style="padding: 8px; display: flex; flex-direction: column; align-items: start; gap: 8px;">
+        <span>Size: {{ humanAttachmentSize() }}</span>
+        <span>Type: {{ attachmentType() }}</span>
+        <button mat-button (click)="removeAttachment()">
+          <mat-icon>delete</mat-icon>
+          <span>Clear</span>
+        </button>
+      </div>
+    }</div>
+
+
   <mat-form-field>
     <mat-label>Title</mat-label>
     <input matInput formControlName="title">
@@ -21,59 +65,47 @@
     <mat-label>Standards</mat-label>
     <mat-select formControlName="standards" multiple>
       <mat-select-trigger>
-        {{form.controls.standards.value?.[0] || ''}}
+        {{ form.controls.standards.value?.[0] || '' }}
         @if ((form.controls.standards.value?.length || 0) > 1) {
-        <span class="example-additional-selection">
-          (+{{(form.controls.standards.value?.length || 0) - 1}} {{form.controls.standards.value?.length === 2 ? 'other' :
-          'others'}})
+          <span class="example-additional-selection">
+          (+{{ (form.controls.standards.value?.length || 0) - 1 }} {{
+              form.controls.standards.value?.length === 2 ? 'other' :
+                'others'
+            }})
         </span>
         }
       </mat-select-trigger>
       @for (group of strandGroups() | keyvalue; track group.key) {
-      <mat-optgroup [label]="group.key">
-        @for (standard of group.value; track standard.coding) {
-        <mat-option [value]="standard.coding" style="padding-top: 4px; padding-bottom: 4px">
-          {{standard.description}}
-          <strong>({{standard.coding}})</strong>
-        </mat-option>
-        }
-      </mat-optgroup>
+        <mat-optgroup [label]="group.key">
+          @for (standard of group.value; track standard.coding) {
+            <mat-option [value]="standard.coding" style="padding-top: 4px; padding-bottom: 4px">
+              {{ standard.description }}
+              <strong>({{ standard.coding }})</strong>
+            </mat-option>
+          }
+        </mat-optgroup>
       }
     </mat-select>
   </mat-form-field>
-  @if(attachment()) {
-    <button mat-flat-button color="warn" (click)="removeAttachment()">
-      <mat-icon>delete</mat-icon>
-      <span>Clear</span>
-    </button>
-  } @else {
-    <div style="display: flex; gap: 8px;">
-      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" capture="user" />
-      <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
-        <mat-icon>add_a_photo</mat-icon>
-        <span>Add Photo</span>
+
+  <div class="surface-background" style="border-radius: 16px; position: fixed; right: 32px; bottom: 32px">
+    @if (shouldShowCheckmark()) {
+      <svg class="animation animation-1" viewBox="0 0 100 100">
+        <path class="checkmark" d="M 25 50 l 15 15 l 35 -35"/>
+      </svg>
+    } @else {
+      <button mat-fab extended color="accent" (click)="submit()"
+              [disabled]="!attachment || isSubmitting()">
+        <mat-icon>send</mat-icon>
+        <span>Submit</span>
       </button>
-      <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" capture="user" />
-      <button style="flex: 1;" mat-flat-button (click)="videoInput.click()">
-        <mat-icon>video_camera_back_add</mat-icon>
-        <span>Add Video</span>
-      </button>
+    }
+  </div>
+
+  @if (isSubmitting()) {
+    <div style="position: fixed; left: 0; bottom: 0; width: 100vw;">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
   }
-
-{{humanAttachmentSize()}}
-  @if(attachmentDataUrl()) {
-    @if(isVideoType()) {
-      <video controls>
-        <source [src]="attachmentDataUrl()" [type]="attachmentType()" />
-      </video>
-    } @else {
-      <img [src]="attachmentDataUrl()" />
-    }
-  }
-  <button style="position: fixed; right: 32px; bottom: 32px;" mat-fab extended color="primary" (click)="submit()" [disabled]="!attachment || isSubmitting()">
-    <mat-icon>send</mat-icon>
-    <span>{{ isSubmitting() ? "Submitting..." : "Submit" }}</span>
-  </button>
 
 </form>

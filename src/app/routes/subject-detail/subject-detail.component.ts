@@ -15,7 +15,7 @@ const HOME_ROUTE = './homeschool';
 
 @Component({
   selector: 'app-subject-detail',
-  imports: [AsyncPipe, JsonPipe, MatButton, MatIcon, MatToolbar, MatInput, MatFormField, MatLabel],
+  imports: [MatButton, MatIcon, MatToolbar, MatInput, MatFormField, MatLabel],
   standalone: true,
   templateUrl: './subject-detail.component.html',
   styleUrl: './subject-detail.component.css',
