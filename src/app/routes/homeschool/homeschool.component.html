@@ -53,9 +53,15 @@
       <span>Add Video</span>
     </button>
   </div>
-
+{{videoType}}
   @if(attachmentDataUrl) {
-    <img [src]="attachmentDataUrl" />
+    @if(videoType) {
+      <video controls>
+        <source [src]="attachmentDataUrl" [type]="videoType" />
+      </video>
+    } @else {
+      <img [src]="attachmentDataUrl" />
+    }
   }
   <button style="position: fixed; right: 32px; bottom: 32px;" mat-fab extended color="primary" (click)="submit()" [disabled]="!attachment || isSubmitting()">
     <mat-icon>send</mat-icon>

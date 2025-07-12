@@ -1,4 +1,4 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal, viewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
@@ -60,7 +60,7 @@ export class HomeschoolComponent {
   private readonly loginStore = inject(LoginStore);
   homeschoolStandardsRepository = inject(HomeschoolStandardsRepository);
   homeschoolRecordsService = inject(HomeschoolRecordsService);
-
+  
   storage = getStorage();
 
   form = new FormGroup({
@@ -92,9 +92,16 @@ export class HomeschoolComponent {
 
   attachment: File | null = null;
   attachmentDataUrl: string | ArrayBuffer | null | undefined = '';
+  videoType: string | null | undefined = '';
 
   onFileSelected(event: any) {
     this.attachment = event.target.files[0];
+
+    if(this.attachment?.type.indexOf('video') != -1) {
+      this.videoType = this.attachment?.type;
+    } else {
+      this.videoType = null;
+    }
 
     const fileReader = new FileReader();
     fileReader.readAsDataURL(this.attachment as Blob);
