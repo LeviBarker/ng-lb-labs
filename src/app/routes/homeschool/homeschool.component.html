@@ -11,14 +11,12 @@
 
   @if (!attachment()) {
     <div style="display: flex; gap: 8px;">
-      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*"
-             capture="user"/>
+      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*" />
       <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
         <mat-icon>add_a_photo</mat-icon>
         <span>Add Photo</span>
       </button>
-      <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*"
-             capture="user"/>
+      <input #videoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="video/*" />
       <button style="flex: 1;" mat-flat-button (click)="videoInput.click()">
         <mat-icon>video_camera_back_add</mat-icon>
         <span>Add Video</span>
