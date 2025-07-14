@@ -41,7 +41,7 @@
       </div>
       <div style="padding: 8px; display: flex; flex-direction: column; align-items: start; gap: 8px;">
         <span>Size: {{ humanAttachmentSize() }}</span>
-        <span>Type: {{ attachmentType() }}</span>
+        <span><mat-chip>{{ attachmentType() }}</mat-chip></span>
         <button mat-button (click)="removeAttachment()">
           <mat-icon>delete</mat-icon>
           <span>Clear</span>
@@ -95,7 +95,7 @@
       </svg>
     } @else {
       <button mat-fab extended color="accent" (click)="submit()"
-              [disabled]="!attachment || isSubmitting()">
+              [disabled]="!attachment || isSubmitting() || !form.valid">
         <mat-icon>send</mat-icon>
         <span>Submit</span>
       </button>

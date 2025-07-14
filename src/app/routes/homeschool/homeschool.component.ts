@@ -1,14 +1,12 @@
-import {Component, computed, inject, signal, viewChild} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatButton, MatFabButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {AsyncPipe, DatePipe, JsonPipe, KeyValuePipe} from '@angular/common';
-import {SubjectService} from '../../slices/subject/subject.service';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatFormField, MatInput, MatInputModule, MatLabel} from '@angular/material/input';
-import {SubjectStore} from '../../slices/subject/subject.store';
 import {HomeschoolStandardsRepository} from '../../slices/homeschool-standards/homeschool-standards.repository';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -18,12 +16,13 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {HomeschoolStandard} from '../../slices/homeschool-standards/homeschool-standard';
 import {MatSelectModule} from '@angular/material/select';
 import {getStorage, ref, uploadBytes} from '@angular/fire/storage';
-import {Auth} from '@angular/fire/auth';
 import {LoginStore} from '../../slices/login/login.store';
 import {nanoid} from 'nanoid'
 import {HomeschoolRecordsService} from '../../slices/homeschool-records/homeschool-records.service';
 import {ImagePipe} from '../../ui/image.pipe';
 import {MatProgressBar} from '@angular/material/progress-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatChip} from '@angular/material/chips';
 
 @Component({
   selector: 'app-homeschool',
@@ -52,7 +51,8 @@ import {MatProgressBar} from '@angular/material/progress-bar';
     MatSelectModule,
     MatFabButton,
     ImagePipe,
-    MatProgressBar
+    MatProgressBar,
+    MatChip
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
@@ -64,6 +64,7 @@ export class HomeschoolComponent {
   private readonly loginStore = inject(LoginStore);
   homeschoolStandardsRepository = inject(HomeschoolStandardsRepository);
   homeschoolRecordsService = inject(HomeschoolRecordsService);
+  snackBar = inject(MatSnackBar);
 
   storage = getStorage();
 
@@ -118,33 +119,40 @@ export class HomeschoolComponent {
   shouldShowCheckmark = signal(false);
 
   async submit() {
-    this.isSubmitting.set(true);
-    const uid = this.loginStore.user()?.uid;
-    let attachmentUrl: string | null = null;
+    try {
+      this.isSubmitting.set(true);
+      const uid = this.loginStore.user()?.uid;
+      let attachmentUrl: string | null = null;
 
-    const attachment = this.attachment()
-    if (attachment) {
-      const extension = this.attachment.name.split('.')[1];
-      attachmentUrl = `users/${uid}/${nanoid()}.${extension}`;
-      const attachmentRef = ref(this.storage, attachmentUrl);
+      const attachment = this.attachment()
+      if (attachment) {
+        const extension = this.attachment.name.split('.')[1];
+        attachmentUrl = `users/${uid}/${nanoid()}.${extension}`;
+        const attachmentRef = ref(this.storage, attachmentUrl);
 
-      await uploadBytes(attachmentRef, attachment);
+        await uploadBytes(attachmentRef, attachment);
+      }
+
+      await this.homeschoolRecordsService.create({
+        name: this.form.controls.title.value ?? '',
+        date: this.form.controls.date.value ?? '',
+        standardsCoding: this.form.controls.standards.value ?? [],
+        attachmentUrl
+      });
+
+      this.isSubmitting.set(false);
+      this.removeAttachment();
+      this.form.reset();
+      this.shouldShowCheckmark.set(true);
+      setTimeout(() => {
+        this.shouldShowCheckmark.set(false);
+      }, 2000);
+    } catch (e) {
+      this.snackBar.open("Something went wrong saving your record, please try again.", "OK", {
+        duration: 3000
+      });
+      this.isSubmitting.set(false);
     }
-
-    await this.homeschoolRecordsService.create({
-      name: this.form.controls.title.value ?? '',
-      date: this.form.controls.date.value ?? '',
-      standardsCoding: this.form.controls.standards.value ?? [],
-      attachmentUrl
-    });
-
-    this.isSubmitting.set(false);
-    this.removeAttachment();
-    this.form.reset();
-    this.shouldShowCheckmark.set(true);
-    setTimeout(() => {
-      this.shouldShowCheckmark.set(false);
-    }, 2000);
   }
 
   removeAttachment() {
