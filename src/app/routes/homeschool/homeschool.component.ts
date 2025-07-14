@@ -126,7 +126,7 @@ export class HomeschoolComponent {
 
       const attachment = this.attachment()
       if (attachment) {
-        const extension = this.attachment.name.split('.')[1];
+        const extension = attachment.type.split('/')[1];
         attachmentUrl = `users/${uid}/${nanoid()}.${extension}`;
         const attachmentRef = ref(this.storage, attachmentUrl);
 
