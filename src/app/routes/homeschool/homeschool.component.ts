@@ -74,6 +74,7 @@ export class HomeschoolComponent {
 
   form = new FormGroup({
     title: new FormControl('', [Validators.required]),
+    description: new FormControl(''),
     date: new FormControl(new Date().toISOString(), [Validators.required]),
     standards: new FormControl<string[]>([])
   })
@@ -141,6 +142,7 @@ export class HomeschoolComponent {
         name: this.form.controls.title.value ?? '',
         date: this.form.controls.date.value ?? '',
         standardsCoding: this.form.controls.standards.value ?? [],
+        description: this.form.controls.description.value ?? '',
         attachmentUrl
       });
 
