@@ -11,7 +11,7 @@
 
   @if (!attachment()) {
     <div style="display: flex; gap: 8px;">
-      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*, video/*"
+      <input #photoInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*"
              capture="user"/>
       <button color="primary" style="flex: 1;" mat-flat-button (click)="photoInput.click()">
         <mat-icon>add_a_photo</mat-icon>
@@ -23,9 +23,14 @@
         <span>Video</span>
       </button>
       <input #attachmentInput style="display: none;" type="file" (change)="onFileSelected($event)" accept="image/*, video/*"/>
-      <button style="flex: 1;" mat-flat-button (click)="attachmentInput.click()">
-        <mat-icon>attach_file_add</mat-icon>
-        <span>File</span>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="attachmentInput.click()">
+          <mat-icon>attach_file_add</mat-icon>
+          <span>Attach File</span>
+        </button>
+      </mat-menu>
+      <button [matMenuTriggerFor]="menu" style="flex: 0; width: 48px" mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
       </button>
     </div>
   }

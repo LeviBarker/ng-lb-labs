@@ -23,6 +23,7 @@ import {ImagePipe} from '../../ui/image.pipe';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatChip} from '@angular/material/chips';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'app-homeschool',
@@ -52,7 +53,10 @@ import {MatChip} from '@angular/material/chips';
     MatFabButton,
     ImagePipe,
     MatProgressBar,
-    MatChip
+    MatChip,
+    MatMenu,
+    MatMenuTrigger,
+    MatMenuItem
   ],
   standalone: true,
   templateUrl: './homeschool.component.html',
