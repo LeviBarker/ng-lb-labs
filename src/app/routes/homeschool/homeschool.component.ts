@@ -15,7 +15,7 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HomeschoolStandard} from '../../slices/homeschool-standards/homeschool-standard';
 import {MatSelectModule} from '@angular/material/select';
-import {getStorage, ref, uploadBytes} from '@angular/fire/storage';
+import {getDownloadURL, getStorage, ref, uploadBytes} from '@angular/fire/storage';
 import {LoginStore} from '../../slices/login/login.store';
 import {nanoid} from 'nanoid'
 import {HomeschoolRecordsService} from '../../slices/homeschool-records/homeschool-records.service';
@@ -24,6 +24,8 @@ import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatChip} from '@angular/material/chips';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import { collection, collectionData, Firestore, getFirestore } from '@angular/fire/firestore';
+import { HomeschoolRecord } from '../../models/homeschool-record';
 
 @Component({
   selector: 'app-homeschool',
@@ -70,6 +72,10 @@ export class HomeschoolComponent {
   homeschoolRecordsService = inject(HomeschoolRecordsService);
   snackBar = inject(MatSnackBar);
 
+  firestore = inject(Firestore);
+  homeschoolRecordsCollection = collection(this.firestore, 'homeschool_records');
+  records$ = collectionData(this.homeschoolRecordsCollection);
+
   storage = getStorage();
 
   form = new FormGroup({
@@ -97,7 +103,7 @@ export class HomeschoolComponent {
   date = new FormControl(new Date())
 
   async goBack() {
-    await this.router.navigate(['./']);
+    await this.router.navigate(['homeschool']);
   }
 
   attachment = signal<File | null>(null);
@@ -132,10 +138,11 @@ export class HomeschoolComponent {
       const attachment = this.attachment()
       if (attachment) {
         const extension = attachment.type.split('/')[1];
-        attachmentUrl = `users/${uid}/${nanoid()}.${extension}`;
-        const attachmentRef = ref(this.storage, attachmentUrl);
+        const uploadUrl = `users/${uid}/${nanoid()}.${extension}`;
+        const attachmentRef = ref(this.storage, uploadUrl);
 
-        await uploadBytes(attachmentRef, attachment);
+        const snapshot = await uploadBytes(attachmentRef, attachment);
+        attachmentUrl = await getDownloadURL(snapshot.ref);
       }
 
       await this.homeschoolRecordsService.create({

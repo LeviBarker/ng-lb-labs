@@ -1,4 +1,5 @@
 export interface HomeschoolRecord {
+  id?: string;
   uid?: string;
   name?: string;
   date: string;

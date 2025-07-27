@@ -5,10 +5,16 @@ import {authGuard} from './routes/auth.guard';
 import {HomeschoolComponent} from './routes/homeschool/homeschool.component';
 import {SubjectDetailComponent} from './routes/subject-detail/subject-detail.component';
 import {PersonalDashboardComponent} from './routes/personal-dashboard/personal-dashboard.component';
+import {HomeschoolListComponent} from './routes/homeschool-list/homeschool-list.component';
 
 export const routes: Routes = [
   {
     path: 'homeschool',
+    component: HomeschoolListComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'homeschool/add',
     component: HomeschoolComponent,
     canActivate: [authGuard],
   },
